@@ -15,10 +15,10 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
 // Store credentials (in production, use environment variables)
-const SECRET = 'LQ3W4K5JPOEVMSGXV5BJFXHGHQ';
-const API_KEY = '2uW9g2gV';
-const CLIENT_ID = 'B50059699';
-const PASSWORD = '6969';
+const SECRET = process.env.SEC;
+const API_KEY = process.env.KEY;
+const CLIENT_ID =process.env.CLIENT_ID;
+const PASSWORD = process.env.PASSWORD;
 
 // Generate TOTP for authentication
 function generateTOTP() {
