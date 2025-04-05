@@ -376,6 +376,35 @@ app.post('/api/model/analyze', async (req, res) => {
     }
 });
 
+app.get('/api/crypto', async (req, res) => {
+  try {
+    // Construct the Coinlayer API URL without callback for pure JSON
+    const url = 'http://api.coinlayer.com/live?access_key=23b45be2a1394357c6e991382a6810fb';
+    
+    const response = await fetch(url);
+    
+    if (!response.ok) {
+      throw new Error(`Coinlayer API responded with status: ${response.status}`);
+    }
+    
+    // Parse JSON response
+    const data = await response.json();
+    
+    // Return JSON data
+    res.json({
+      success: true,
+      data: data
+    });
+  } catch (error) {
+    console.error('Error fetching crypto data:', error);
+    res.status(500).json({
+      success: false,
+      message: 'Failed to fetch cryptocurrency data',
+      error: error.message
+    });
+  }
+});
+
 
 // Health check endpoint
 app.get('/api/health', (req, res) => {
