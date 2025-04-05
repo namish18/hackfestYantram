@@ -1,0 +1,77 @@
+.crypto-container {
+  min-height: 100vh;
+  background: linear-gradient(to bottom right, #e0f7e9, #ffffff);
+  padding: 2rem;
+  font-family: 'Segoe UI', sans-serif;
+}
+
+.crypto-title {
+  font-size: 2.5rem;
+  color: #155e46;
+  text-align: center;
+  margin-bottom: 1.5rem;
+}
+
+.search-bar {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 2rem;
+  position: relative;
+  max-width: 400px;
+  margin-inline: auto;
+}
+
+.search-bar input {
+  width: 100%;
+  padding: 0.75rem 2.5rem;
+  border: 2px solid #ccc;
+  border-radius: 2rem;
+  font-size: 1rem;
+  text-align: center;
+  outline: none;
+}
+
+.search-icon {
+  position: absolute;
+  left: 1rem;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #888;
+}
+
+.crypto-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.5rem;
+}
+
+.crypto-card {
+  background: white;
+  padding: 2rem 1rem;
+  border-radius: 1.5rem;
+  text-align: center;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease;
+}
+
+.crypto-card:hover {
+  transform: scale(1.05);
+}
+
+.crypto-card h2 {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #155e46;
+  margin-bottom: 0.5rem;
+}
+
+.crypto-card p {
+  font-size: 1.2rem;
+  color: #333;
+}
+
+.loading {
+  text-align: center;
+  color: #999;
+  font-size: 1.2rem;
+}

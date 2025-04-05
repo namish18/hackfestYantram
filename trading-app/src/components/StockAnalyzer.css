@@ -1,0 +1,60 @@
+.stock-analyzer-container {
+    max-width: 600px;
+    margin: 50px auto;
+    padding: 2rem;
+    background: #f5fff3;
+    border-radius: 20px;
+    box-shadow: 0 0 15px rgba(0, 128, 0, 0.1);
+    text-align: center;
+  }
+  
+  .stock-analyzer-container h1 {
+    font-size: 2rem;
+    margin-bottom: 20px;
+    color: #1b4d3e;
+  }
+  
+  .stock-analyzer-container input {
+    padding: 10px 15px;
+    font-size: 1rem;
+    width: 70%;
+    border: 2px solid #4caf50;
+    border-radius: 10px;
+    margin-bottom: 10px;
+  }
+  
+  .stock-analyzer-container button {
+    padding: 10px 20px;
+    margin-left: 10px;
+    font-size: 1rem;
+    background: #4caf50;
+    color: white;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: background 0.3s ease;
+  }
+  
+  .stock-analyzer-container button:hover {
+    background: #388e3c;
+  }
+  
+  .error {
+    margin-top: 10px;
+    color: red;
+    font-weight: 500;
+  }
+  
+  .result-card {
+    background: white;
+    padding: 1rem;
+    border-radius: 15px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    margin-top: 20px;
+    text-align: left;
+  }
+  
+  .result-card h2 {
+    color: #2e7d32;
+    margin-bottom: 10px;
+  }  
