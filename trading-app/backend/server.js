@@ -112,6 +112,37 @@ app.get('/api/orders', authenticate, async (req, res) => {
   }
 });
 
+// Get holdings endpoint
+app.get('/api/holdings', authenticate, async (req, res) => {
+  try {
+    const holdingData = await req.smart_api.getHolding();
+    res.json({ success: true, data: holdingData });
+  } catch (error) {
+    console.error('Error fetching holdings:', error);
+    res.status(500).json({ success: false, message: 'Failed to fetch holdings', error: error.message });
+  }
+});
+
+// Get positions endpoint
+app.get('/api/positions', authenticate, async (req, res) => {
+  try {
+    const positionData = await req.smart_api.getPosition();
+    res.json({ success: true, data: positionData });
+  } catch (error) {
+    console.error('Error fetching positions:', error);
+    res.status(500).json({ 
+      success: false, 
+      message: 'Failed to fetch positions', 
+      error: error.message 
+    });
+  }
+});
+
+
+
+
+
+
 // Health check endpoint
 app.get('/api/health', (req, res) => {
   res.json({ status: 'ok', timestamp: new Date() });
