@@ -112,19 +112,7 @@ def calculate_trust_score(ticker_data, returns, risk):
     return trust_scores
 
 def assign_ratings(trust_scores, risk, tickers):
-    """
-    Assign star ratings (1-5) based on trust scores
-    Assign risk categories (Low to High) based on risk values
     
-    Parameters:
-    - trust_scores: Dictionary with ticker symbols as keys and trust scores as values
-    - risk: Numpy array of risk values for each ticker
-    - tickers: List of ticker symbols
-    
-    Returns:
-    - star_ratings: Dictionary with ticker symbols and their star ratings
-    - risk_categories: List of risk categories in same order as tickers
-    """
     star_ratings = {}
     risk_categories = []
     
