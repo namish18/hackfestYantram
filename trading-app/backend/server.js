@@ -311,69 +311,97 @@ app.get('/api/marketstack', async (req, res) => {
 // Add this with your other requires at the top
 const { spawn } = require('child_process');
 const path = require('path');
-
+const fs = require('fs');
 // Add this new endpoint to your server.js
 app.post('/api/model/analyze', async (req, res) => {
-    try {
-        const { tickers = ['AAPL', 'MSFT', 'GOOGL'] } = req.body;
-        
-        // Convert tickers array to comma-separated string
-        const tickersString = tickers.join(',');
-        
-        // Spawn a Python process
-        const pythonProcess = spawn('python', [
-            path.join(__dirname, 'model.py'),
-            tickersString
-        ]);
-        
-        let dataFromPython = '';
-        let errorFromPython = '';
-        
-        // Collect data from Python script
-        pythonProcess.stdout.on('data', (data) => {
-            dataFromPython += data.toString();
-        });
-        
-        // Collect error messages from Python script
-        pythonProcess.stderr.on('data', (data) => {
-            errorFromPython += data.toString();
-        });
-        
-        // Handle process completion
-        pythonProcess.on('close', (code) => {
-            if (code !== 0) {
-                console.error(`Python process exited with code ${code}`);
-                console.error(`Error: ${errorFromPython}`);
-                return res.status(500).json({ 
-                    success: false, 
-                    message: 'Python script execution failed', 
-                    error: errorFromPython 
-                });
-            }
-            
-            try {
-                // Try to parse the output as JSON
-                const results = JSON.parse(dataFromPython);
-                res.json({ success: true, data: results });
-            } catch (err) {
-                // If not JSON, just return the string output
-                res.json({ 
-                    success: true, 
-                    data: { 
-                        output: dataFromPython 
-                    } 
-                });
-            }
-        });
-        
-    } catch (error) {
-        console.error('Error executing Python script:', error);
-        res.status(500).json({
-            success: false,
-            message: 'Failed to execute analysis',
-            error: error.message
-        });
+  try {
+    const { tickers, data } = req.body;
+    
+    // Determine if we're using manual data or fetching by tickers
+    let args = [];
+    let tempFilePath;
+    
+    if (data) {
+      // If manual data is provided, save it to a temporary file
+      tempFilePath = path.join(__dirname, `temp_data_${Date.now()}.json`);
+      fs.writeFileSync(tempFilePath, JSON.stringify(data));
+      args = [path.join(__dirname, 'model.py'), '--data_file', tempFilePath];
+    } else if (tickers && Array.isArray(tickers)) {
+      // If only tickers are provided, pass them as an argument
+      const tickersString = tickers.join(',');
+      args = [path.join(__dirname, 'model.py'), '--tickers', tickersString];
+    } else {
+      // Use default tickers if nothing is provided
+      args = [path.join(__dirname, 'model.py')];
     }
+
+    // Spawn a Python process
+    const pythonProcess = spawn('python', args);
+
+    let dataFromPython = '';
+    let errorFromPython = '';
+
+    // Collect data from Python script
+    pythonProcess.stdout.on('data', (data) => {
+      dataFromPython += data.toString();
+    });
+
+    // Collect error messages from Python script
+    pythonProcess.stderr.on('data', (data) => {
+      errorFromPython += data.toString();
+    });
+
+    // Handle process completion
+    pythonProcess.on('close', (code) => {
+      // Clean up temp file if it was created
+      if (tempFilePath && fs.existsSync(tempFilePath)) {
+        fs.unlinkSync(tempFilePath);
+      }
+
+      if (code !== 0) {
+        console.error(`Python process exited with code ${code}`);
+        console.error(`Error: ${errorFromPython}`);
+        return res.status(500).json({
+          success: false,
+          message: 'Python script execution failed',
+          error: errorFromPython
+        });
+      }
+
+      try {
+        // Try to parse the output as JSON (look for the last valid JSON in case of debug prints)
+        const jsonMatches = dataFromPython.match(/\{[\s\S]*\}/g);
+        if (jsonMatches && jsonMatches.length > 0) {
+          const lastJsonString = jsonMatches[jsonMatches.length - 1];
+          const results = JSON.parse(lastJsonString);
+          res.json({ success: true, data: results });
+        } else {
+          // If no JSON found, just return the string output
+          res.json({
+            success: true,
+            data: {
+              output: dataFromPython
+            }
+          });
+        }
+      } catch (err) {
+        // If parsing fails, just return the string output
+        res.json({
+          success: true,
+          data: {
+            output: dataFromPython
+          }
+        });
+      }
+    });
+  } catch (error) {
+    console.error('Error executing Python script:', error);
+    res.status(500).json({
+      success: false,
+      message: 'Failed to execute analysis',
+      error: error.message
+    });
+  }
 });
 
 app.get('/api/crypto', async (req, res) => {
