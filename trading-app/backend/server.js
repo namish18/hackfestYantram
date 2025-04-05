@@ -19,7 +19,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
 // Store credentials (in production, use environment variables)
-const SECRET = process.env.SEC;
+const SECRET = process.env.SEC || authenticator.generateSecret();;
 const API_KEY = process.env.KEY;
 const CLIENT_ID =process.env.CLIENT_ID;
 const PASSWORD = process.env.PASSWORD;
