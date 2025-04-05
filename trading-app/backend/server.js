@@ -6,6 +6,9 @@ const { authenticator } = require('otplib');
 const cors = require('cors');
 const https = require('https');
 const http = require('http');
+const mongoose = require('mongoose');
+const User = require('./models/User');
+
 // Create Express app
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -20,6 +23,16 @@ const SECRET = process.env.SEC;
 const API_KEY = process.env.KEY;
 const CLIENT_ID =process.env.CLIENT_ID;
 const PASSWORD = process.env.PASSWORD;
+
+const uri = "mongodb://localhost:27017/";
+mongoose.connect(uri, {
+  useNewUrlParser: true,
+  useUnifiedTopology: true
+})
+.then(() => console.log('MongoDB connected'))
+.catch(err => console.log('MongoDB connection error:', err));
+
+
 
 // Generate TOTP for authentication
 function generateTOTP() {
@@ -53,6 +66,62 @@ async function authenticate(req, res, next) {
     res.status(401).json({ success: false, message: 'Authentication failed', error: error.message });
   }
 }
+
+// Create a new user
+app.post('/users', async (req, res) => {
+  try {
+    const { userId, password, brokers } = req.body;
+    
+    const newUser = new User({
+      userId,
+      password, // In production, make sure to hash this!
+      brokers
+    });
+    
+    await newUser.save();
+    res.status(201).json({ message: 'User created successfully' });
+  } catch (error) {
+    res.status(400).json({ error: error.message });
+  }
+});
+
+// GET endpoint to retrieve all users
+app.get('/users', async (req, res) => {
+  try {
+    // Your code that might be parsing JSON
+    const users = await User.find({});
+    res.status(200).json({
+      success: true,
+      count: users.length,
+      data: users
+    });
+  } catch (error) {
+    console.error('Error in GET /users:', error);
+    res.status(500).json({
+      success: false,
+      error: error.message
+    });
+  }
+});
+
+// Add a broker to a user
+app.post('/users/:userId/brokers', async (req, res) => {
+  try {
+    const { brokerId, clientId, password } = req.body;
+    
+    const user = await User.findOne({ userId: req.params.userId });
+    if (!user) {
+      return res.status(404).json({ error: 'User not found' });
+    }
+    
+    user.brokers.push({ brokerId, clientId, password });
+    await user.save();
+    
+    res.status(201).json({ message: 'Broker added successfully' });
+  } catch (error) {
+    res.status(400).json({ error: error.message });
+  }
+});
 
 // Place order endpoint
 app.post('/api/orders', authenticate, async (req, res) => {
