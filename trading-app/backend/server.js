@@ -4,6 +4,7 @@ const bodyParser = require('body-parser');
 const { SmartAPI } = require('smartapi-javascript');
 const { authenticator } = require('otplib');
 const cors = require('cors');
+const https = require('https');
 
 // Create Express app
 const app = express();
@@ -138,7 +139,151 @@ app.get('/api/positions', authenticate, async (req, res) => {
   }
 });
 
+// Position conversion endpoint
+app.post('/api/positions/convert', authenticate, async (req, res) => {
+  try {
+    const conversionParams = req.body;
+    const conversionData = await req.smart_api.convertPosition(conversionParams);
+    res.json({ success: true, data: conversionData });
+  } catch (error) {
+    console.error('Error converting position:', error);
+    res.status(500).json({
+      success: false,
+      message: 'Failed to convert position',
+      error: error.message
+    });
+  }
+});
 
+
+// Get quotes endpoint
+app.get('/api/quotes', authenticate, async (req, res) => {
+  try {
+    const quoteParams = req.body;
+    // Default parameters if none provided
+    const params = quoteParams || {
+      "mode": "FULL",
+      "exchangeTokens": {
+        "NSE": ["3045"]
+      }
+    };
+    
+    const quoteData = await req.smart_api.getQuotes(params);
+    res.json({ success: true, data: quoteData });
+  } catch (error) {
+    console.error('Error fetching quotes:', error);
+    res.status(500).json({ 
+      success: false, 
+      message: 'Failed to fetch quotes', 
+      error: error.message 
+    });
+  }
+});
+
+// Historical candle data endpoint
+app.post('/api/historical', authenticate, async (req, res) => {
+  try {
+    const { exchange, symboltoken, interval, fromdate, todate } = req.body;
+
+    // Prepare request payload
+    const postData = JSON.stringify({
+      exchange,
+      symboltoken,
+      interval,
+      fromdate,
+      todate
+    });
+
+    // Prepare request options
+    const options = {
+      hostname: 'apiconnect.angelone.in',
+      path: '/rest/secure/angelbroking/historical/v1/getCandleData',
+      method: 'POST',
+      headers: {
+        'X-PrivateKey': API_KEY,
+        'Accept': 'application/json',
+        'X-SourceID': 'WEB',
+        'X-ClientLocalIP': req.ip || 'CLIENT_LOCAL_IP',
+        'X-ClientPublicIP': req.ip || 'CLIENT_PUBLIC_IP',
+        'X-MACAddress': 'MAC_ADDRESS', // Replace with actual MAC address
+        'X-UserType': 'USER',
+        'Authorization': `Bearer ${req.jwtToken}`,
+        'Content-Type': 'application/json',
+        'Content-Length': Buffer.byteLength(postData)
+      }
+    };
+
+    // Make the HTTPS request
+    const request = https.request(options, (response) => {
+      let data = '';
+
+      // Collect response data
+      response.on('data', (chunk) => {
+        data += chunk;
+      });
+
+      // Handle end of response
+      response.on('end', () => {
+        try {
+          const parsedData = JSON.parse(data);
+          res.json({ success: true, data: parsedData });
+        } catch (error) {
+          console.error('Error parsing response:', error);
+          res.status(500).json({
+            success: false,
+            message: 'Failed to parse response',
+            error: error.message
+          });
+        }
+      });
+    });
+
+    // Handle request errors
+    request.on('error', (error) => {
+      console.error('Error making HTTPS request:', error);
+      res.status(500).json({
+        success: false,
+        message: 'Failed to fetch historical data',
+        error: error.message
+      });
+    });
+
+    // Write the POST data and end the request
+    request.write(postData);
+    request.end();
+  } catch (error) {
+    console.error('Error processing historical data request:', error);
+    res.status(500).json({
+      success: false,
+      message: 'Failed to process historical data request',
+      error: error.message
+    });
+  }
+});
+
+// Get Open Interest data endpoint
+app.post('/api/oi', authenticate, async (req, res) => {
+  try {
+    const { exchange, symboltoken, interval, fromdate, todate } = req.body;
+    
+    const oiData = await req.smart_api.getOIData({
+      exchange,
+      symboltoken,
+      interval,
+      fromdate,
+      todate
+    });
+    
+    res.json({ success: true, data: oiData });
+  } catch (error) {
+    console.error('Error fetching OI data:', error);
+    res.status(500).json({
+      success: false,
+      message: 'Failed to fetch open interest data',
+      error: error.message
+    });
+  }
+});
 
 
 
