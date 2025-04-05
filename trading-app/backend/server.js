@@ -5,7 +5,7 @@ const { SmartAPI } = require('smartapi-javascript');
 const { authenticator } = require('otplib');
 const cors = require('cors');
 const https = require('https');
-
+const http = require('http');
 // Create Express app
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -285,6 +285,28 @@ app.post('/api/oi', authenticate, async (req, res) => {
   }
 });
 
+//  MarketStack API Endpoint
+app.get('/api/marketstack', async (req, res) => {
+  const symbol = req.query.symbol || 'AAPL';
+  const accessKey = '33f465c08eee9e5fa69e9e9f3cdb26bd';
+  const url = `http://api.marketstack.com/v1/eod?access_key=${accessKey}&symbols=${symbol}`;
+
+  http.get(url, (apiRes) => {
+    let data = '';
+
+    apiRes.on('data', (chunk) => data += chunk);
+    apiRes.on('end', () => {
+      try {
+        const parsed = JSON.parse(data);
+        res.json({ success: true, data: parsed });
+      } catch (err) {
+        res.status(500).json({ success: false, message: 'Failed to parse MarketStack data', error: err.message });
+      }
+    });
+  }).on('error', (err) => {
+    res.status(500).json({ success: false, message: 'Failed to fetch MarketStack data', error: err.message });
+  });
+});
 
 
 
