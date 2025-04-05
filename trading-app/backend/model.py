@@ -101,8 +101,55 @@ trust_scores = calculate_trust_score(data, returns, risk)
 print("Trust Scores:")
 for ticker, score in trust_scores.items():
     print(f"{ticker}: {score:.4f}")
-# 4. Create risk parameters visualization (Safety Meter)
-risk_categories = pd.cut(risk, bins=3, labels=['Low', 'Medium', 'High'])
+def assign_ratings(trust_scores, risk, tickers):
+    """
+    Assign star ratings (1-5) based on trust scores
+    Assign risk categories (Low to High) based on risk values
+    
+    Parameters:
+    - trust_scores: Dictionary with ticker symbols as keys and trust scores as values
+    - risk: Numpy array of risk values for each ticker
+    - tickers: List of ticker symbols
+    
+    Returns:
+    - star_ratings: Dictionary with ticker symbols and their star ratings
+    - risk_categories: List of risk categories in same order as tickers
+    """
+    star_ratings = {}
+    risk_categories = []
+    
+    # Process each ticker
+    for i, ticker in enumerate(tickers):
+        trust_score = trust_scores[ticker]
+        risk_value = risk[i]
+        
+        # Assign stars (1-5) based on trust score
+        if trust_score >= 0.8:
+            star_ratings[ticker] = 5  # Excellent trust score
+        elif trust_score >= 0.6:
+            star_ratings[ticker] = 4  # Very good trust score
+        elif trust_score >= 0.4:
+            star_ratings[ticker] = 3  # Average trust score
+        elif trust_score >= 0.2:
+            star_ratings[ticker] = 2  # Below average trust score
+        else:
+            star_ratings[ticker] = 1  # Poor trust score
+        
+        # Assign risk category based on risk value
+        if risk_value < 0.01:
+            risk_categories.append("Low")
+        elif risk_value < 0.015:
+            risk_categories.append("Medium-Low")
+        elif risk_value < 0.02:
+            risk_categories.append("Medium")
+        elif risk_value < 0.025:
+            risk_categories.append("Medium-High")
+        else:
+            risk_categories.append("High")
+    
+    return star_ratings, risk_categories
+
+
 
 # 5. Build recommendation engine
 # Compare funds and generate recommendations
