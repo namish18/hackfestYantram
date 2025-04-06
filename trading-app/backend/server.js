@@ -7,7 +7,7 @@ import cors from 'cors';
 import https from 'https';
 import http from 'http';
 import mongoose from 'mongoose';
-import User from './models/User';
+import User from './models/User.js';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import { spawn } from 'child_process';
