@@ -1,24 +1,13 @@
 // server.js
-import express from 'express';
-import bodyParser from 'body-parser';
-import { SmartAPI } from 'smartapi-javascript';
-import { authenticator } from 'otplib';
-import cors from 'cors';
-import https from 'https';
-import http from 'http';
-import mongoose from 'mongoose';
-import User from './models/User.js';
-import path from 'path';
-import { fileURLToPath } from 'url';
-import { spawn } from 'child_process';
-import fs from 'fs';
-// Add these imports at the top
-
-
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
-
-
+const express = require('express');
+const bodyParser = require('body-parser');
+const { SmartAPI } = require('smartapi-javascript');
+const { authenticator } = require('otplib');
+const cors = require('cors');
+const https = require('https');
+const http = require('http');
+const mongoose = require('mongoose');
+const User = require('./models/User');
 
 // Create Express app
 const app = express();
@@ -35,13 +24,13 @@ const API_KEY = process.env.KEY;
 const CLIENT_ID =process.env.CLIENT_ID;
 const PASSWORD = process.env.PASSWORD;
 
-// const uri = "mongodb://localhost:27017/";
-// mongoose.connect(uri, {
-//   useNewUrlParser: true,
-//   useUnifiedTopology: true
-// })
-// .then(() => console.log('MongoDB connected'))
-// .catch(err => console.log('MongoDB connection error:', err));
+const uri = "mongodb://localhost:27017/";
+mongoose.connect(uri, {
+  useNewUrlParser: true,
+  useUnifiedTopology: true
+})
+.then(() => console.log('MongoDB connected'))
+.catch(err => console.log('MongoDB connection error:', err));
 
 
 
@@ -429,32 +418,32 @@ app.post('/api/oi', authenticate, async (req, res) => {
 });
 
 //  MarketStack API Endpoint
-// app.get('/api/marketstack', async (req, res) => {
-//   const symbol = req.query.symbol || 'AAPL';
-//   const accessKey = '33f465c08eee9e5fa69e9e9f3cdb26bd';
-//   const url = `http://api.marketstack.com/v1/eod?access_key=${accessKey}&symbols=${symbol}`;
+app.get('/api/marketstack', async (req, res) => {
+  const symbol = req.query.symbol || 'AAPL';
+  const accessKey = '33f465c08eee9e5fa69e9e9f3cdb26bd';
+  const url = `http://api.marketstack.com/v1/eod?access_key=${accessKey}&symbols=${symbol}`;
 
-//   http.get(url, (apiRes) => {
-//     let data = '';
+  http.get(url, (apiRes) => {
+    let data = '';
 
-//     apiRes.on('data', (chunk) => data += chunk);
-//     apiRes.on('end', () => {
-//       try {
-//         const parsed = JSON.parse(data);
-//         res.json({ success: true, data: parsed });
-//       } catch (err) {
-//         res.status(500).json({ success: false, message: 'Failed to parse MarketStack data', error: err.message });
-//       }
-//     });
-//   }).on('error', (err) => {
-//     res.status(500).json({ success: false, message: 'Failed to fetch MarketStack data', error: err.message });
-//   });
-// });
+    apiRes.on('data', (chunk) => data += chunk);
+    apiRes.on('end', () => {
+      try {
+        const parsed = JSON.parse(data);
+        res.json({ success: true, data: parsed });
+      } catch (err) {
+        res.status(500).json({ success: false, message: 'Failed to parse MarketStack data', error: err.message });
+      }
+    });
+  }).on('error', (err) => {
+    res.status(500).json({ success: false, message: 'Failed to fetch MarketStack data', error: err.message });
+  });
+});
 
 // Add this with your other requires at the top
-// const { spawn } = require('child_process');
-// const path = require('path');
-// const fs = require('fs');
+const { spawn } = require('child_process');
+const path = require('path');
+const fs = require('fs');
 // Add this new endpoint to your server.js
 app.post('/api/model/analyze', async (req, res) => {
   try {
@@ -547,47 +536,39 @@ app.post('/api/model/analyze', async (req, res) => {
   }
 });
 
-// app.get('/api/crypto', async (req, res) => {
-//   try {
-//     // Construct the Coinlayer API URL without callback for pure JSON
-//     const url = 'http://api.coinlayer.com/live?access_key=23b45be2a1394357c6e991382a6810fb';
+app.get('/api/crypto', async (req, res) => {
+  try {
+    // Construct the Coinlayer API URL without callback for pure JSON
+    const url = 'http://api.coinlayer.com/live?access_key=23b45be2a1394357c6e991382a6810fb';
     
-//     const response = await fetch(url);
+    const response = await fetch(url);
     
-//     if (!response.ok) {
-//       throw new Error(`Coinlayer API responded with status: ${response.status}`);
-//     }
+    if (!response.ok) {
+      throw new Error(`Coinlayer API responded with status: ${response.status}`);
+    }
     
-//     // Parse JSON response
-//     const data = await response.json();
+    // Parse JSON response
+    const data = await response.json();
     
-//     // Return JSON data
-//     res.json({
-//       success: true,
-//       data: data
-//     });
-//   } catch (error) {
-//     console.error('Error fetching crypto data:', error);
-//     res.status(500).json({
-//       success: false,
-//       message: 'Failed to fetch cryptocurrency data',
-//       error: error.message
-//     });
-//   }
-// });
+    // Return JSON data
+    res.json({
+      success: true,
+      data: data
+    });
+  } catch (error) {
+    console.error('Error fetching crypto data:', error);
+    res.status(500).json({
+      success: false,
+      message: 'Failed to fetch cryptocurrency data',
+      error: error.message
+    });
+  }
+});
 
 
 // Health check endpoint
 app.get('/api/health', (req, res) => {
   res.json({ status: 'ok', timestamp: new Date() });
-});
-
-// Serve static files from the React build folder
-app.use(express.static(path.join(__dirname, '../src/build')));
-
-// Handle all other routes by serving the React app
-app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname, '../src/build', 'index.html'));
 });
 
 // Start the server
