@@ -450,7 +450,7 @@ app.get('/api/marketstack', async (req, res) => {
 
 // Add this with your other requires at the top
 const { spawn } = require('child_process');
-const path = require('path');
+// const path = require('path');
 const fs = require('fs');
 // Add this new endpoint to your server.js
 app.post('/api/model/analyze', async (req, res) => {
