@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import "./Header.css";
 
 // Assets
@@ -9,19 +9,30 @@ import avatarImg from "../assets/Avatar.jpg";
 const Header = () => {
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [dashboardDropdownOpen, setDashboardDropdownOpen] = useState(false);
+  const [stocksDropdownOpen, setStocksDropdownOpen] = useState(false);
+
+  const navigate = useNavigate();
 
   const toggleDropdown = () => {
     setDropdownOpen((prev) => !prev);
-    setDashboardDropdownOpen(false); // Close sub-dropdown if reopening main
+    setDashboardDropdownOpen(false);
   };
 
   const toggleDashboardDropdown = () => {
     setDashboardDropdownOpen((prev) => !prev);
   };
 
+  const toggleStocksDropdown = () => {
+    setStocksDropdownOpen((prev) => !prev);
+  };
+
   const handleLogout = () => {
     console.log("Logging out...");
     window.location.href = "/";
+  };
+
+  const handleStockScoreClick = () => {
+    navigate("/ticker-analysis");
   };
 
   return (
@@ -34,7 +45,26 @@ const Header = () => {
       {/* Navigation */}
       <nav className="nav">
         <Link to="/mutualfund" className="nav-link">Mutual Funds</Link>
-        <Link to="/stocks" className="nav-link">Stocks</Link>
+
+        <div className="nav-link dropdown-parent" onClick={toggleStocksDropdown}>
+          Stocks
+          {stocksDropdownOpen && (
+            <div className="dropdown-submenu">
+              <a
+                href="https://stockanalysisyantram.streamlit.app/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="dropdown-item"
+              >
+                Stock Analysis
+              </a>
+              <div className="dropdown-item" onClick={handleStockScoreClick}>
+                Stock Score
+              </div>
+            </div>
+          )}
+        </div>
+
         <Link to="/crypto" className="nav-link">Crypto</Link>
       </nav>
 
