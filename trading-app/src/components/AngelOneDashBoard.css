@@ -27,6 +27,19 @@
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
 }
 
+.user-dashboard-title {
+  font-size: 1.25rem;
+  font-weight: bold;
+  color: #000;
+  margin-bottom: 0.5rem;
+}
+
+.client-id {
+  font-weight: bold;
+  color: #000;
+  margin-left: 0.5rem;
+}
+
 .conversion-form {
   display: flex;
   flex-direction: column;

@@ -1,0 +1,184 @@
+/* TickerAnalysis.css */
+.ticker-analysis-container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+    font-family: Arial, sans-serif;
+  }
+  
+  h2 {
+    color: #ffffff;
+    margin-bottom: 20px;
+    text-align: center;
+  }
+  
+  .ticker-form {
+    margin-bottom: 30px;
+  }
+  
+  .inputs-container {
+    margin-bottom: 20px;
+  }
+  
+  .input-group {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+  }
+  
+  .ticker-input {
+    flex: 1;
+    padding: 10px 15px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    margin-right: 10px;
+  }
+  
+  .add-button,
+  .remove-button {
+    width: 36px;
+    height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+    font-weight: bold;
+    background-color: #f0f0f0;
+    border: 1px solid #ccc;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: background-color 0.3s, color 0.3s;
+  }
+  
+  .add-button {
+    background-color: #e6f7e6;
+    color: #28a745;
+  }
+  
+  .add-button:hover {
+    background-color: #d4f5d4;
+  }
+  
+  .remove-button {
+    background-color: #f7e6e6;
+    color: #dc3545;
+  }
+  
+  .remove-button:hover {
+    background-color: #f5d4d4;
+  }
+  
+  .submit-button {
+    width: 100%;
+    padding: 12px;
+    font-size: 16px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+  
+  .submit-button:hover {
+    background-color: #0069d9;
+  }
+  
+  .submit-button:disabled {
+    background-color: #6c757d;
+    cursor: not-allowed;
+  }
+  
+  .error-message {
+    padding: 10px 15px;
+    background-color: #f8d7da;
+    color: #721c24;
+    border: 1px solid #f5c6cb;
+    border-radius: 4px;
+    margin-bottom: 20px;
+  }
+  
+  .loading-indicator {
+    text-align: center;
+    padding: 20px;
+    color: #6c757d;
+  }
+  
+  .results-container {
+    background-color: #f8f9fa;
+    border: 1px solid #e9ecef;
+    border-radius: 4px;
+    padding: 20px;
+  }
+  
+  .results-container h3 {
+    margin-top: 0;
+    color: #343a40;
+    margin-bottom: 15px;
+  }
+  
+  .results-output {
+    background-color: #f5f5f5;
+    padding: 15px;
+    border-radius: 4px;
+    overflow-x: auto;
+    white-space: pre-wrap;
+    font-family: monospace;
+    font-size: 14px;
+  }
+  
+  .results-json {
+    display: grid;
+    grid-gap: 15px;
+  }
+  
+  .result-item {
+    background-color: white;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    padding: 15px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  }
+  
+  .result-item h4 {
+    margin-top: 0;
+    margin-bottom: 10px;
+    color: #007bff;
+    border-bottom: 1px solid #eee;
+    padding-bottom: 5px;
+  }
+  
+  .result-item pre {
+    background-color: #f5f5f5;
+    padding: 10px;
+    border-radius: 4px;
+    overflow-x: auto;
+    margin: 0;
+    font-family: monospace;
+    font-size: 14px;
+  }
+  
+  @media (max-width: 768px) {
+    .ticker-analysis-container {
+      padding: 15px;
+    }
+    
+    .ticker-input {
+      padding: 8px 12px;
+      font-size: 14px;
+    }
+    
+    .add-button,
+    .remove-button {
+      width: 32px;
+      height: 32px;
+      font-size: 18px;
+    }
+    
+    .submit-button {
+      padding: 10px;
+      font-size: 14px;
+    }
+  }
+  

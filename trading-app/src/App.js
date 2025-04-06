@@ -5,10 +5,11 @@ import MutualFundExplorer from "./components/MutualFundTable";
 import SignForm from "./components/SignForm";
 import CryptoExplorer from './components/CryptoExplorer';
 import StockAnalyzer from "./components/StockAnalyzer";
-import MarketStackData from "./components/MarketStackData";
+import StockScore from "./components/TickerAnalysis";
 import AngelOneDashBoard from "./components/AngelOneDashBoard";
 import LandingPage from "./components/LandingPage";
 import ChatBot from "./components/ChatBot";
+import TickerAnalysis from "./components/TickerAnalysis";
 
 const AppWrapper = () => {
   const location = useLocation();
@@ -23,9 +24,10 @@ const AppWrapper = () => {
         <Route path="/mutualfund" element={<MutualFundExplorer />} />
         <Route path="/crypto" element={<CryptoExplorer />} />
         <Route path="/stock" element={<StockAnalyzer />} />
-        <Route path="/marketstack" element={<MarketStackData />} />
+        <Route path="/tickeranalysis" element={<StockScore />} />
         <Route path="/angelone" element={<AngelOneDashBoard />} />
         <Route path="/chatbot" element={<ChatBot />} />
+        <Route path="/tickeranalysis" elements ={<TickerAnalysis />} />
       </Routes>
     </>
   );

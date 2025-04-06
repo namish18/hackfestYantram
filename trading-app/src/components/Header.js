@@ -49,7 +49,7 @@ const Header = () => {
           {stockDropdownOpen && (
             <div className="dropdown-content">
               <Link to="/stock" className="dropdown-item">Stock Analysis</Link>
-              <Link to="/marketstack" className="dropdown-item">MarketStack</Link>
+              <Link to="/tickeranalysis" className="dropdown-item">Stock Score</Link>
             </div>
           )}
         </div>
