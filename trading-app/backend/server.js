@@ -67,23 +67,86 @@ async function authenticate(req, res, next) {
   }
 }
 
-// Create a new user
+// Enhanced user creation endpoint
 app.post('/users', async (req, res) => {
   try {
     const { userId, password, brokers } = req.body;
     
+    // Validate input
+    if (!userId || !password) {
+      return res.status(400).json({ 
+        success: false, 
+        error: 'User ID and password are required' 
+      });
+    }
+
+    // Create new user
     const newUser = new User({
       userId,
-      password, // In production, make sure to hash this!
-      brokers
+      password, // In production, this should be hashed
+      brokers: brokers || []
     });
-    
+
     await newUser.save();
-    res.status(201).json({ message: 'User created successfully' });
+    
+    res.status(201).json({ 
+      success: true,
+      message: 'User created successfully'
+    });
   } catch (error) {
-    res.status(400).json({ error: error.message });
+    // Check for validation errors (like duplicate userId)
+    if (error.name === 'ValidationError') {
+      return res.status(400).json({ 
+        success: false, 
+        error: 'User ID already exists or is invalid'
+      });
+    }
+    
+    console.error('User creation error:', error);
+    res.status(500).json({ 
+      success: false, 
+      error: 'Server error during user creation'
+    });
   }
 });
+
+// New login endpoint
+app.post('/login', async (req, res) => {
+  try {
+    const { userId, password } = req.body;
+    
+    // Validate input
+    if (!userId || !password) {
+      return res.status(400).json({ 
+        success: false, 
+        error: 'User ID and password are required' 
+      });
+    }
+
+    // Find user in database
+    const user = await User.findOne({ userId });
+    
+    // Check if user exists and password matches
+    if (!user || user.password !== password) {
+      return res.status(401).json({ 
+        success: false, 
+        error: 'Invalid credentials' 
+      });
+    }
+
+    res.status(200).json({ 
+      success: true, 
+      message: 'Login successful'
+    });
+  } catch (error) {
+    console.error('Login error:', error);
+    res.status(500).json({ 
+      success: false, 
+      error: 'Server error during login'
+    });
+  }
+});
+
 
 // GET endpoint to retrieve all users
 app.get('/users', async (req, res) => {
