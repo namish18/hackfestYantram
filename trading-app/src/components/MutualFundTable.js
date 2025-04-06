@@ -73,8 +73,21 @@ const MutualFundExplorer = () => {
 
   return (
     <div className="explorer-container">
+      {/* Mutual Fund Analysis Button */}
+      <div className="mutual-fund-analysis-button-container">
+        <a
+          href="https://mutualfundyantram.streamlit.app/"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="mutual-fund-analysis-button"
+        >
+          Mutual Fund Analysis
+        </a>
+      </div>
+
       <h2>Mutual Fund Explorer</h2>
 
+      {/* Search Box */}
       <div className="search-container">
         <FaSearch className="search-icon-inside" />
         <input
@@ -86,6 +99,7 @@ const MutualFundExplorer = () => {
         />
       </div>
 
+      {/* Fund Cards */}
       <div className="card-grid">
         {visibleFunds.map((fund) => (
           <div key={fund.schemeCode} className="fund-card">
@@ -97,6 +111,7 @@ const MutualFundExplorer = () => {
         ))}
       </div>
 
+      {/* Show More Button */}
       {displayCount < filteredData.length && (
         <button className="show-more" onClick={() => setDisplayCount(displayCount + 6)}>
           Show More

@@ -60,7 +60,7 @@ const AngelOneDashBoard = () => {
 
       <div className="section">
         <h2 className="user-dashboard-title">
-          User Dashboard <span className="client-id">Client ID: 5B6008C</span>
+          <span className="client-id">Client ID: 5B6008C</span>
         </h2>
         <h3>Holdings</h3>
         <div className="cards">

@@ -104,3 +104,26 @@ body, html {
   background-color: #388e3c;
   transform: scale(1.05);
 }
+
+.mutual-fund-analysis-button-container {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+
+.mutual-fund-analysis-button {
+  background-color: white;
+  color: black;
+  font-weight: bold;
+  border-radius: 25px;
+  padding: 12px 24px;
+  border: 2px solid black;
+  text-decoration: none;
+  transition: background-color 0.3s, color 0.3s;
+}
+
+.mutual-fund-analysis-button:hover {
+  background-color: black;
+  color: white;
+}
