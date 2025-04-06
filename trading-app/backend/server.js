@@ -1,13 +1,17 @@
 // server.js
-const express = require('express');
-const bodyParser = require('body-parser');
-const { SmartAPI } = require('smartapi-javascript');
-const { authenticator } = require('otplib');
-const cors = require('cors');
-const https = require('https');
-const http = require('http');
-const mongoose = require('mongoose');
-const User = require('./models/User');
+import express from 'express';
+import bodyParser from 'body-parser';
+import { SmartAPI } from 'smartapi-javascript';
+import { authenticator } from 'otplib';
+import cors from 'cors';
+import https from 'https';
+import http from 'http';
+import mongoose from 'mongoose';
+import User from './models/User';
+import path from 'path';
+import { fileURLToPath } from 'url';
+import { spawn } from 'child_process';
+import fs from 'fs';
 // Add these imports at the top
 import path from 'path';
 import { fileURLToPath } from 'url';
@@ -449,9 +453,9 @@ app.get('/api/marketstack', async (req, res) => {
 });
 
 // Add this with your other requires at the top
-const { spawn } = require('child_process');
+// const { spawn } = require('child_process');
 // const path = require('path');
-const fs = require('fs');
+// const fs = require('fs');
 // Add this new endpoint to your server.js
 app.post('/api/model/analyze', async (req, res) => {
   try {
