@@ -4,7 +4,6 @@ import Header from "./components/Header";
 import MutualFundExplorer from "./components/MutualFundTable";
 import SignForm from "./components/SignForm";
 import CryptoExplorer from './components/CryptoExplorer';
-import StockAnalyzer from "./components/StockAnalyzer";
 import StockScore from "./components/TickerAnalysis";
 import AngelOneDashBoard from "./components/AngelOneDashBoard";
 import LandingPage from "./components/LandingPage";
@@ -23,7 +22,6 @@ const AppWrapper = () => {
         <Route path="/signup" element={<SignForm />} />
         <Route path="/mutualfund" element={<MutualFundExplorer />} />
         <Route path="/crypto" element={<CryptoExplorer />} />
-        <Route path="/stock" element={<StockAnalyzer />} />
         <Route path="/tickeranalysis" element={<StockScore />} />
         <Route path="/angelone" element={<AngelOneDashBoard />} />
         <Route path="/chatbot" element={<ChatBot />} />
