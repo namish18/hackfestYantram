@@ -1,9 +1,13 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import heroImage from '../assets/logo_short.png';
 import logoImage from '../assets/logo_long.png';
 import "./LandingPage.css";
+
 const LandingPage = () => {
+  const [showModal, setShowModal] = useState(false);
+  const handleModalToggle = () => setShowModal(!showModal);
+
   return (
     <div className="landing-page">
       {/* Navbar */}
@@ -16,18 +20,19 @@ const LandingPage = () => {
             <div className="nav-links">
               <a href="#features">Features</a>
               <a href="#pricing">Pricing</a>
+              <Link to="/stock">Stock Analysis</Link>
               <a href="#contact">Contact</a>
             </div>
             {/* Navbar Buttons */}
-<div className="nav-buttons">
-  <Link to="/signin" className="sign-in-btn">Sign In</Link>
-  <Link to="/signform" className="get-started-btn">Get Started</Link>
-</div>
-
+            <div className="nav-buttons">
+              <Link to="/signup" className="sign-in-btn">Sign In</Link>
+              <Link to="/signup" className="get-started-btn">Get Started</Link>
+            </div>
           </div>
         </div>
       </nav>
 
+      {/* Hero Section */}
       <section className="hero-section">
         <div className="hero-container">
           <div className="hero-grid">
@@ -42,9 +47,9 @@ const LandingPage = () => {
                 <Link to="/signup" className="start-investing-btn">
                   Start Investing
                 </Link>
-                <a href="#learn" className="learn-more-btn">
+                <button onClick={handleModalToggle} className="learn-more-btn">
                   Learn More
-                </a>
+                </button>
               </div>
               <div className="hero-stats">
                 <div className="stat-item">
@@ -67,6 +72,27 @@ const LandingPage = () => {
           </div>
         </div>
       </section>
+
+      {/* ILNB Modal */}
+      {showModal && (
+        <div className="modal-overlay">
+          <div className="modal-content">
+            <img src={logoImage} alt="ILNB Finserv Logo" className="modal-logo" />
+            <p className="modal-text">
+              ILNB Finserv, officially known as the ILNB Group of Financial Services, is a Mumbai-based financial services firm founded in 2017. The company operates as a small partnership firm with a team of 2–10 employees, specializing in financial planning, mutual funds, portfolio management, and insurance services. Branded as "Your Financial Doctor," ILNB Finserv emphasizes personalized financial solutions to help clients make informed decisions about investments, insurance, and expenses. Their aim is to provide dedicated and unbiased assistance to achieve both short-term and long-term financial goals while fostering enduring client relationships. The company is headquartered at Sandhurst Building, Opera House, Mumbai.
+            </p>
+            <a
+              href="https://ilnb.co.in/"
+              className="ilnb-button"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              MOVE TO ILNB FINSERV
+            </a>
+            <button onClick={handleModalToggle} className="close-btn">×</button>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
