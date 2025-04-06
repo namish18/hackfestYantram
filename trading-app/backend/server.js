@@ -35,13 +35,13 @@ const API_KEY = process.env.KEY;
 const CLIENT_ID =process.env.CLIENT_ID;
 const PASSWORD = process.env.PASSWORD;
 
-const uri = "mongodb://localhost:27017/";
-mongoose.connect(uri, {
-  useNewUrlParser: true,
-  useUnifiedTopology: true
-})
-.then(() => console.log('MongoDB connected'))
-.catch(err => console.log('MongoDB connection error:', err));
+// const uri = "mongodb://localhost:27017/";
+// mongoose.connect(uri, {
+//   useNewUrlParser: true,
+//   useUnifiedTopology: true
+// })
+// .then(() => console.log('MongoDB connected'))
+// .catch(err => console.log('MongoDB connection error:', err));
 
 
 
