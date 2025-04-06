@@ -429,27 +429,27 @@ app.post('/api/oi', authenticate, async (req, res) => {
 });
 
 //  MarketStack API Endpoint
-app.get('/api/marketstack', async (req, res) => {
-  const symbol = req.query.symbol || 'AAPL';
-  const accessKey = '33f465c08eee9e5fa69e9e9f3cdb26bd';
-  const url = `http://api.marketstack.com/v1/eod?access_key=${accessKey}&symbols=${symbol}`;
+// app.get('/api/marketstack', async (req, res) => {
+//   const symbol = req.query.symbol || 'AAPL';
+//   const accessKey = '33f465c08eee9e5fa69e9e9f3cdb26bd';
+//   const url = `http://api.marketstack.com/v1/eod?access_key=${accessKey}&symbols=${symbol}`;
 
-  http.get(url, (apiRes) => {
-    let data = '';
+//   http.get(url, (apiRes) => {
+//     let data = '';
 
-    apiRes.on('data', (chunk) => data += chunk);
-    apiRes.on('end', () => {
-      try {
-        const parsed = JSON.parse(data);
-        res.json({ success: true, data: parsed });
-      } catch (err) {
-        res.status(500).json({ success: false, message: 'Failed to parse MarketStack data', error: err.message });
-      }
-    });
-  }).on('error', (err) => {
-    res.status(500).json({ success: false, message: 'Failed to fetch MarketStack data', error: err.message });
-  });
-});
+//     apiRes.on('data', (chunk) => data += chunk);
+//     apiRes.on('end', () => {
+//       try {
+//         const parsed = JSON.parse(data);
+//         res.json({ success: true, data: parsed });
+//       } catch (err) {
+//         res.status(500).json({ success: false, message: 'Failed to parse MarketStack data', error: err.message });
+//       }
+//     });
+//   }).on('error', (err) => {
+//     res.status(500).json({ success: false, message: 'Failed to fetch MarketStack data', error: err.message });
+//   });
+// });
 
 // Add this with your other requires at the top
 // const { spawn } = require('child_process');
@@ -547,34 +547,34 @@ app.post('/api/model/analyze', async (req, res) => {
   }
 });
 
-app.get('/api/crypto', async (req, res) => {
-  try {
-    // Construct the Coinlayer API URL without callback for pure JSON
-    const url = 'http://api.coinlayer.com/live?access_key=23b45be2a1394357c6e991382a6810fb';
+// app.get('/api/crypto', async (req, res) => {
+//   try {
+//     // Construct the Coinlayer API URL without callback for pure JSON
+//     const url = 'http://api.coinlayer.com/live?access_key=23b45be2a1394357c6e991382a6810fb';
     
-    const response = await fetch(url);
+//     const response = await fetch(url);
     
-    if (!response.ok) {
-      throw new Error(`Coinlayer API responded with status: ${response.status}`);
-    }
+//     if (!response.ok) {
+//       throw new Error(`Coinlayer API responded with status: ${response.status}`);
+//     }
     
-    // Parse JSON response
-    const data = await response.json();
+//     // Parse JSON response
+//     const data = await response.json();
     
-    // Return JSON data
-    res.json({
-      success: true,
-      data: data
-    });
-  } catch (error) {
-    console.error('Error fetching crypto data:', error);
-    res.status(500).json({
-      success: false,
-      message: 'Failed to fetch cryptocurrency data',
-      error: error.message
-    });
-  }
-});
+//     // Return JSON data
+//     res.json({
+//       success: true,
+//       data: data
+//     });
+//   } catch (error) {
+//     console.error('Error fetching crypto data:', error);
+//     res.status(500).json({
+//       success: false,
+//       message: 'Failed to fetch cryptocurrency data',
+//       error: error.message
+//     });
+//   }
+// });
 
 
 // Health check endpoint
