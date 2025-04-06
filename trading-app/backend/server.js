@@ -8,6 +8,14 @@ const https = require('https');
 const http = require('http');
 const mongoose = require('mongoose');
 const User = require('./models/User');
+// Add these imports at the top
+import path from 'path';
+import { fileURLToPath } from 'url';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+
 
 // Create Express app
 const app = express();
@@ -569,6 +577,14 @@ app.get('/api/crypto', async (req, res) => {
 // Health check endpoint
 app.get('/api/health', (req, res) => {
   res.json({ status: 'ok', timestamp: new Date() });
+});
+
+// Serve static files from the React build folder
+app.use(express.static(path.join(__dirname, '../src/build')));
+
+// Handle all other routes by serving the React app
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, '../src/build', 'index.html'));
 });
 
 // Start the server
