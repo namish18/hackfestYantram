@@ -8,7 +8,7 @@ import CryptoExplorer from './components/CryptoExplorer';
 import StockAnalyzer from "./components/StockAnalyzer";
 import MarketStackData from "./components/MarketStackData";
 import AngelOneDashBoard from "./components/AngelOneDashBoard";
-
+import TickerAnalysis from "./components/TickerAnalysis";
 
 const AppWrapper = () => {
   const location = useLocation();
@@ -18,12 +18,13 @@ const AppWrapper = () => {
     <>
       {!hideHeaderOn.includes(location.pathname) && <Header />}
       <Routes>
-        <Route path="/" element={<SignForm />} />
+        <Route path="/" element={<SignForm/>} />
         <Route path="/mutualfund" element={<MutualFundExplorer />} />
         <Route path="/crypto" element={<CryptoExplorer />} />
         <Route path="/stock" element={<StockAnalyzer />} />
         <Route path="/marketstack" element={<MarketStackData />} />
         <Route path="/angelone" element={<AngelOneDashBoard />} />
+        <Route path="/tickeranalysis" element={<TickerAnalysis />} />
       </Routes>
     </>
   );
