@@ -56,7 +56,7 @@ const AngelOneDashBoard = () => {
 
   return (
     <div className="angelone-container">
-      <h2>AngelOne Dashboard</h2>
+      <h2 className="dashboard-title">AngelOne Dashboard</h2>
 
       <div className="section">
         <h2 className="user-dashboard-title">
